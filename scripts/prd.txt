@@ -1,0 +1,45 @@
+<context>
+# Overview
+The AI Job Applier MVP aims to automate the process of filling out job application forms on any job page. The user provides a job link, their resume, and personal information (in JSON/YAML). The system will use this data to fill and submit the application form automatically. This phase focuses on foundational setup and data management.
+
+# Core Features
+- User Profile Data Model: Store applicant info (name, contact, education, work experience, skills, social links).
+- Resume Management: Store and access the user's resume (plain text, PDF, or docx for future support).
+- Job Application Log: Track applications (company, role, URL, date, status, notes).
+- Configuration Management: Handle API keys, credentials, and settings securely.
+- Input/Output: Accept user info and resume as JSON/YAML and file input.
+
+# User Experience
+- User provides personal info and resume via JSON/YAML and file upload.
+- System stores and manages this data for use in automation.
+- No UI in MVP; CLI or file-based interaction only.
+</context>
+<PRD>
+# Technical Architecture
+- Python 3.x
+- Data models using Python classes (optionally Pydantic for validation)
+- File I/O for JSON/YAML data
+- Secure credential handling (env vars, keyring, or cookies)
+- Directory structure: src/ for code, data/ for user info and resumes, config/ for settings
+
+# Development Roadmap
+- Project structure and environment setup
+- Implement user profile and resume data models
+- Implement job application log model
+- Implement file I/O for user info and resume
+- Implement configuration management for credentials
+
+# Logical Dependency Chain
+1. Project/environment setup
+2. Data models (user profile, resume, application log)
+3. File I/O for user info and resume
+4. Configuration management
+
+# Risks and Mitigations
+- Data privacy: Use env vars and avoid hardcoding sensitive info
+- Data format variability: Validate JSON/YAML inputs
+- Future extensibility: Modular code and clear data models
+
+# Appendix
+- No additional info for MVP foundation phase
+</PRD> 
