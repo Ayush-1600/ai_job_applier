@@ -178,3 +178,80 @@ Here's a revised phased approach for building your AI-powered job application bo
   - Leverage for boilerplate code, generating function stubs from comments, suggesting completions.
   - Assistance in debugging and exploring alternative implementations.
   - **Crucial**: Always critically review, understand, and test AI-generated code. It's an assistant, not a replacement for developer understanding and responsibility.
+
+
+DEV MODE
+
+# Updates while building Phase - 1
+
+## Hybrid Resume Data Model Approach (MVP Nuance)
+
+### Rationale
+To balance reliability and flexibility, the MVP resume data model uses a hybrid approach:
+- **Core fields** (required): The model validates that essential sections (e.g., personal_information, education_details, experience_details, skills) are present and non-empty.
+- **Flexible extras**: Any additional sections in the YAML resume are loaded and accessible, but not required. The model warns (but does not fail) if extra fields are present.
+
+### Implementation
+- The Resume class loads all YAML sections as attributes.
+- On validation, it raises an error if any core field is missing or empty.
+- If extra fields are present, it issues a warning (using Python's warnings module).
+
+### Core Required Fields
+- personal_information
+- education_details
+- experience_details
+- skills (or technical_skills)
+
+### Benefits
+- Ensures all automation-critical data is present.
+- Allows users to add new sections without breaking the code.
+- Provides clear feedback for both missing and extra fields.
+
+### Example
+A resume YAML with extra fields (e.g., certifications, languages) will load successfully, but only the absence of core fields will cause an error. Extra fields will trigger a warning, not a failure.
+
+## Job Application Log Model (MVP Nuance)
+
+### Rationale
+A job application log model provides a structured way to record and track every job application submitted using the bot (or manually). It enables accountability, follow-up, and analytics for your job search process.
+
+### Finalized Fields for Job Application Log Entry
+- company: Name of the company
+- role: Job title/position
+- job_url: Link to the job posting
+- date_applied: When you applied (timestamp)
+- location: Exact location of the job (city, country, or remote)
+- work_culture: Work arrangement (e.g., remote, hybrid, on-site)
+- salary_discussed: Salary discussed with HR before interview (yes/no/amount)
+- status: Current status (e.g., Applied, Interviewing, Offer, Rejected)
+- notes: Any extra info (e.g., follow-up, interview feedback)
+- resume_used: Path to the resume version used (if tailored)
+- cover_letter_used: Path to the cover letter (if used)
+- referral: Boolean flag (true/false) if you got a referral, and (optionally) a string for the referrer's name/source
+- last_updated: Timestamp for last status update (for follow-up logic)
+- application_id: (Optional) Unique ID for each application
+
+### Example YAML Entry
+```yaml
+- company: "OpenAI"
+  role: "AI Engineer"
+  job_url: "https://careers.openai.com/jobs/123"
+  date_applied: "2024-05-10T14:23:00"
+  location: "San Francisco, CA"
+  work_culture: "Remote"
+  salary_discussed: "150,000 USD"
+  status: "Applied"
+  notes: "Referred by John Doe, follow up in 2 weeks"
+  resume_used: "data/resume_ayc_nlc.yaml"
+  cover_letter_used: "data/cover_letter_openai.txt"
+  referral: 
+    flag: true
+    source: "LinkedIn - John Doe"
+  last_updated: "2024-05-10T14:23:00"
+  application_id: "openai-20240510-001"
+```
+
+### Implementation
+- The JobApplicationLogEntry and ReferralInfo dataclasses represent each entry and referral details.
+- The JobApplicationLog class manages a list of entries, with methods to add, update, and save/load from YAML.
+- This model supports easy extension for future analytics, reminders, and follow-up automation.
